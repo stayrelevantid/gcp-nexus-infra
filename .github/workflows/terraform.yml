@@ -27,7 +27,7 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           # TODO: Wajib diisi! Ganti value provider di bawah dengan output dari WIF module
-          workload_identity_provider: 'projects/TODO_PROJECT_NUMBER/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider'
+          workload_identity_provider: 'projects/820300963302/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider'
           service_account: 'terraform-nexus@stayrelevantid.iam.gserviceaccount.com'
 
       - name: Setup Terraform
@@ -65,7 +65,7 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           # TODO: Wajib diisi! Ganti value provider di bawah dengan output dari WIF module
-          workload_identity_provider: 'projects/TODO_PROJECT_NUMBER/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider'
+          workload_identity_provider: 'projects/820300963302/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider'
           service_account: 'terraform-nexus@stayrelevantid.iam.gserviceaccount.com'
 
       - name: Setup Terraform
