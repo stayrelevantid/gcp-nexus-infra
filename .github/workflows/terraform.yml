@@ -1,0 +1,84 @@
+name: "Terraform CI/CD Pipeline"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+  id-token: write # Diperlukan untuk autentikasi OIDC/WIF ke Google Cloud API
+
+jobs:
+  terraform-dev:
+    name: "Terraform Dev"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./dev
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          # TODO: Wajib diisi! Ganti value provider di bawah dengan output dari WIF module
+          workload_identity_provider: 'projects/TODO_PROJECT_NUMBER/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider'
+          service_account: 'terraform-nexus@stayrelevantid.iam.gserviceaccount.com'
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: "1.5.0"
+
+      - name: Terraform Format
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan -no-color
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve
+
+  terraform-prod:
+    name: "Terraform Prod"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./prod
+    needs: terraform-dev # Menunggu Dev selesai dulu
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          # TODO: Wajib diisi! Ganti value provider di bawah dengan output dari WIF module
+          workload_identity_provider: 'projects/TODO_PROJECT_NUMBER/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider'
+          service_account: 'terraform-nexus@stayrelevantid.iam.gserviceaccount.com'
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: "1.5.0"
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan -no-color
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve
