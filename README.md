@@ -99,3 +99,29 @@ Karena penggunaan JSON Key telah diblokir secara organisasi (untuk keamanan), ki
 3. **Penting:** Catat output `workload_identity_provider_name` di bagian akhir proses _apply_.
 4. Buka file `.github/workflows/terraform.yml` dan paste Output tersebut ke bagian `workload_identity_provider` di dua tempat (untuk Dev dan Prod).
 5. Lakukan Commit dan Push ke GitHub. Pipeline Terraform akan otomatis berjalan tanpa memerlukan secret tambahan!
+
+---
+
+### 6. Fase Tambahan: Membersihkan Lingkungan (Cleanup)
+Jika proyek ini ditujukan untuk evaluasi atau simulasi Terraform saja (agar tidak ditagih biaya oleh Google Cloud secara terus-menerus), pastikan Anda menghancurkan semua resource.
+
+**Aturan Emas:** _Penghapusan objek harus dilakukan dari yang terakhir kali dibuat ke awal!_
+Jalankan perintah ini berurutan di terminal lokal Anda:
+
+1. Modul Peering:
+   ```bash
+   cd peering && terraform destroy -auto-approve
+   ```
+2. Modul Prod:
+   ```bash
+   cd ../prod && terraform destroy -auto-approve
+   ```
+3. Modul Dev:
+   ```bash
+   cd ../dev && terraform destroy -auto-approve
+   ```
+4. Modul Security (WIF):
+   ```bash
+   cd ../wif && terraform destroy -auto-approve
+   ```
+> ⚠️ **Peringatan**: Setelah ini dijalankan, seluruh VM, Jaringan, Router, dan Koneksi GitHub-GCP akan dicabut.

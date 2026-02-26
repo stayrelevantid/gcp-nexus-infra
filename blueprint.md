@@ -66,6 +66,15 @@ Fase tambahan (Best Practice) untuk mengamankan integrasi GitHub Actions ke GCP 
 - **Keyless CI/CD**: Konfigurasi GitHub Actions (`.github/workflows/terraform.yml`) menggunakan nilai `workload_identity_provider_name` dari output fase ini.
 - **PR Policy**: Tetapkan aturan bahwa setiap perubahan ke `main` (Prod) wajib melalui Review dan pipeline Terraform otomatis _run_.
 
+### Fase 6: Cleanup (Opsional)
+Jika infrastruktur ini hanya dibangun untuk simulasi/latihan, pastikan semua *resource* dihapus agar tidak memakan biaya GCP.
+
+- Menghancurkan _resources_ harus dilakukan secara berurutan *(Reverse Order)* dari yang terakhir dibuat menuju yang pertama:
+  1. `cd peering && terraform destroy -auto-approve`
+  2. `cd prod && terraform destroy -auto-approve`
+  3. `cd dev && terraform destroy -auto-approve`
+  4. `cd wif && terraform destroy -auto-approve`
+
 ## 3. Penutup Brainstorming
 
 Blueprint GCP-Nexus-Infra ini sudah siap untuk diimplementasikan. Anda memulai dari infrastruktur yang "kecil" (single region), namun dengan fondasi modular yang sangat mudah jika ingin diekspansi menjadi multi-region atau multi-project di masa depan.
