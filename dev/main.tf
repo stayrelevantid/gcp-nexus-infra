@@ -7,11 +7,10 @@ terraform {
     }
   }
 
-  # TODO: Uncomment ini setelah Bucket dibuat oleh script Fase 1
-  # backend "gcs" {
-  #   bucket = "nexus-tf-state-stayrelevantid>" # Ganti dengan ID Project Anda
-  #   prefix = "env/dev"
-  # }
+  backend "gcs" {
+    bucket = "nexus-tf-state-stayrelevantid"
+    prefix = "env/dev"
+  }
 }
 
 provider "google" {
