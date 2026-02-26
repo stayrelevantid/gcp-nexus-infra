@@ -101,6 +101,7 @@ resource "google_compute_instance" "vm" {
   project      = var.project_id
   machine_type = var.machine_type
   zone         = "${var.region}-a" # Simplified for 1 zone
+  allow_stopping_for_update = true
 
   tags = ["allow-ssh", "http-server"]
 
