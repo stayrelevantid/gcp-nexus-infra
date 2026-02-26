@@ -25,8 +25,8 @@ module "networking" {
   region       = var.region
   environment  = "prod"
   vpc_name     = "nexus-vpc"
-  subnet_cidr  = "10.1.0.0/24" # Prod subnet
-  machine_type = "e2-medium" # Prod pakai VM sedikit lebih besar
+  subnet_cidr  = "10.3.0.0/24" # Prod subnet
+  machine_type = "e2-small"    # Simulasi PR: Diubah dari e2-micro
 }
 
 output "prod_vm_internal_ip" {
