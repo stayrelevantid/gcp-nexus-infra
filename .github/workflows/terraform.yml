@@ -14,6 +14,8 @@ jobs:
   terraform-dev:
     name: "Terraform Dev"
     runs-on: ubuntu-latest
+    env:
+      TF_VAR_project_id: "stayrelevantid"
     defaults:
       run:
         working-directory: ./dev
@@ -51,6 +53,8 @@ jobs:
   terraform-prod:
     name: "Terraform Prod"
     runs-on: ubuntu-latest
+    env:
+      TF_VAR_project_id: "stayrelevantid"
     defaults:
       run:
         working-directory: ./prod
